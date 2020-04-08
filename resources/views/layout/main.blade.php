@@ -190,6 +190,21 @@
 
                         </li>
 
+                        <div class="dropdown-divider"></div>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#rapportmed" aria-expanded="false" aria-controls="rapportmed">
+                                <i class="mdi mdi-file-excel menu-icon"></i>
+                                <span class="menu-title">Rapport Med</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="rapportmed" style="">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="{{route('test_import')}}"> Importer Rapport Med </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_med')}}">Liste Rapport Med</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
                       @endadmin
 
                        @if(!Auth::user()->isAdmin())
