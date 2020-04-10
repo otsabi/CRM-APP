@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class RapportMedController extends Controller
 {
     public function index(){
-        return view('import.index');
+        return view('import.rapportMed.index');
     }
 
     public function import(Request $request){
@@ -110,7 +110,7 @@ class RapportMedController extends Controller
                     }
 
     public function show(){
-        return view('import.show');
+        return view('import.rapportMed.show');
     }
     public function getRapportMed(){
         $rapportMed = RapportMed::all();

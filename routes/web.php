@@ -93,9 +93,16 @@ Route::get('dash/visites/specialites','HomeController@visiteBySpecialite');
 
 Route::get('dash/visites/ville','HomeController@visiteByVille');
 
-/*  Import Excel File Route */
+/*  Import Excel File Route Rapport Med */
 
-Route::post('/import','RapportMedController@import')->name('import');
-Route::get('/test_import','RapportMedController@index')->name('test_import');
+Route::post('/import_rapportMed','RapportMedController@import')->name('import_rapportMed');
+Route::get('/file_import_rapportMed','RapportMedController@index')->name('file_import_rapportMed');
 Route::get('/show_rapport_med','RapportMedController@show')->name('show_rapport_med');
 Route::get('/dataRapportMed', 'RapportMedController@getRapportMed')->name('dataRapportMed');
+
+/*  Import Excel File Route Rapport Ph */
+
+Route::post('/import_rapportPh','RapportPhController@import')->name('import_rapportPh');
+Route::get('/file_import_rapportPh','RapportPhController@index')->name('file_import_rapportPh');
+Route::get('/show_rapport_ph','RapportPhController@show')->name('show_rapport_ph');
+Route::get('/dataRapportPh', 'RapportPhController@getRapportPh')->name('dataRapportPh');

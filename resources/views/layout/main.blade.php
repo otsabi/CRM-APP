@@ -199,8 +199,22 @@
                             </a>
                             <div class="collapse" id="rapportmed" style="">
                                 <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{route('test_import')}}"> Importer Rapport Med </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportMed')}}"> Importer Rapport Med </a></li>
                                     <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_med')}}">Liste Rapport Med</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#rapportph" aria-expanded="false" aria-controls="rapportph">
+                                <i class="mdi mdi-file-excel menu-icon"></i>
+                                <span class="menu-title">Rapport Ph</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="rapportph" style="">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportPh')}}"> Importer Rapport Ph </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_ph')}}">Liste Rapport Ph</a></li>
                                 </ul>
                             </div>
                         </li>

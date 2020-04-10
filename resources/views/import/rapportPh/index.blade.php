@@ -6,7 +6,7 @@
 
         <div class="col-sm-12 grid-margin stretch-card">
 
-        <form action="{{ route('import') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('import_rapportPh') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
               <label for="exampleFormControlFile1">File input</label>
