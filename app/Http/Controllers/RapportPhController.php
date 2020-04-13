@@ -35,7 +35,7 @@ class RapportPhController extends Controller
                                 (new FastExcel)->sheet(5)->import($file, function ($line) {
                                     //dd($line);
 
-                                    if (!empty($line["PHARMACIE-ZONE"])) {
+                                    if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
                                     if (empty($line["P1 Nombre de boites"])) {
                                         $line["P1 Nombre de boites"]=0;
