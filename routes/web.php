@@ -9,10 +9,21 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use \App\User;
+
+
+//routes pour l'export des données en excel
+Route::get('/export/excel', 'ExportExcelController@export')->name('exportexcel');
+Route::get('/export/index','ExportExcelController@index');
+
+Route::get('/import/index','ImportExcelController@index');
+Route::post('/import/excel','ImportExcelController@import')->name('importexcel');
 
 Route::get('/test', function(){
    return App\User::find(18)->collaborateurs()->get();
 });
+
+
 
 Route::get('/', function(){
     return redirect()->route(session('dashboardUrl'));
@@ -82,7 +93,16 @@ Route::get('dash/visites/specialites','HomeController@visiteBySpecialite');
 
 Route::get('dash/visites/ville','HomeController@visiteByVille');
 
-/*  Import Excel File Route */
+/*  Import Excel File Route Rapport Med */
 
-Route::post('/import','FileController@import')->name('import');
-Route::get('/test_import','FileController@index');
+Route::post('/import_rapportMed','RapportMedController@import')->name('import_rapportMed');
+Route::get('/file_import_rapportMed','RapportMedController@index')->name('file_import_rapportMed');
+Route::get('/show_rapport_med','RapportMedController@show')->name('show_rapport_med');
+Route::get('/dataRapportMed', 'RapportMedController@getRapportMed')->name('dataRapportMed');
+
+/*  Import Excel File Route Rapport Ph */
+
+Route::post('/import_rapportPh','RapportPhController@import')->name('import_rapportPh');
+Route::get('/file_import_rapportPh','RapportPhController@index')->name('file_import_rapportPh');
+Route::get('/show_rapport_ph','RapportPhController@show')->name('show_rapport_ph');
+Route::get('/dataRapportPh', 'RapportPhController@getRapportPh')->name('dataRapportPh');
