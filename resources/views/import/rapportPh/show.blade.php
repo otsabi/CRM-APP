@@ -133,7 +133,7 @@
         
         $(document).ready(function() {
             var table = $('#example').DataTable({
-                //dataRapportMed
+                
                  "ajax": {
                   "url": "dataRapportPh",
                     "dataSrc": ""

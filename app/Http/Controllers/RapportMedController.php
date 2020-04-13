@@ -32,7 +32,7 @@ class RapportMedController extends Controller
                                 //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
                                 //Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(3)->import($file, function ($line) {
-                                    if (!empty($line["Nom Prenom"])) {
+                                    if (!empty($line["Nom Prenom"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
 
                                     if(gettype($line["Montant Inv Précédents"]) == 'integer' && $line["Montant Inv Précédents"] == 0 ){
@@ -114,7 +114,7 @@ class RapportMedController extends Controller
                                 (new FastExcel)->sheet(4)->import($file, function ($line) {
                                     //dd($line);
 
-                                    if (!empty($line["PHARMACIE-ZONE"])) {
+                                    if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
                                     if (empty($line["P1 Nombre de boites"])) {
                                         $line["P1 Nombre de boites"]=0;
