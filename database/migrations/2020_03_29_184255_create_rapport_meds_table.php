@@ -19,7 +19,7 @@ class CreateRapportMedsTable extends Migration
             $table->string('Nom_Prenom');
             $table->string('Specialité');
             $table->string('Etablissement');
-            $table->string('Potentiel');
+            $table->string('Potentiel')->nullable();
             $table->unsignedBigInteger('Montant_Inv_Précédents')->nullable();
             $table->string('Zone_Ville');
 

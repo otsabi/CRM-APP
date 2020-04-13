@@ -7,6 +7,8 @@
     <title>{{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{asset('theme/vendors/materialdesign-webfont/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('theme/vendors/css/vendor.bundle.base.css')}}">
+    <link rel="stylesheet" href="{{asset('theme/vendors/dropify/dropify.min.css')}}">
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -14,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('theme/css/vertical-layout-light/style.css')}}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{asset('theme/images/favicon.png')}}" />
+
 
     @stack('styles')
 </head>
@@ -350,6 +353,7 @@
 <!-- container-scroller -->
 <!-- plugins:js -->
 <script src="{{asset('theme/vendors/js/vendor.bundle.base.js')}}"></script>
+<script src="{{asset('theme/vendors/dropify/dropify.min.js')}}"></script>
 <!-- endinject -->
 <!-- Plugin js for this page -->
 <!-- End plugin js for this page -->
@@ -359,6 +363,8 @@
 <script src="{{asset('theme/js/template.js')}}"></script>
 <script src="{{asset('theme/js/settings.js')}}"></script>
 <script src="{{asset('theme/js/todolist.js')}}"></script>
+<script src="{{asset('theme/js/dropify.js')}}"></script>
+
 
 @stack('scripts')
 <!-- endinject -->

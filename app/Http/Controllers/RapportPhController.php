@@ -10,6 +10,15 @@ use Carbon\Carbon;
 
 class RapportPhController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:SUPADMIN');
+    }
+
+
+
+
     public function index(){
         return view('import.rapportPh.index');
     }
@@ -43,6 +52,7 @@ class RapportPhController extends Controller
                                     if (empty($line["P5 Nombre de boites"])) {
                                         $line["P5 Nombre de boites"]=0;
                                     }
+                                    if ($line["Plan/Réalisé"] === 'Réalisé' or 'Réalisé hors Plan' ){
 
                                      return RapportPh::create([
 
@@ -67,6 +77,7 @@ class RapportPhController extends Controller
                                     'P5_présenté' => $line["P5 présenté"],
                                     'P5_nombre_boites' => $line["P5 Nombre de boites"],
 
+
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
                                     'DELEGUE' => "EL MEHDI AIT FAKIR",
@@ -75,10 +86,13 @@ class RapportPhController extends Controller
                                     ]);
 
                                     }
+                                }
 
                                 });
 
                             }
+                            return redirect()->action('RapportPhController@show')->with('status','ajouté avec succès.');
+
                         }
 
                     }

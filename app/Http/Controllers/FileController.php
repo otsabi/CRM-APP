@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\FileImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
 use App\Imports;
 
 
@@ -38,7 +39,7 @@ class FileController extends Controller
             }
 
 
-        
+
 
 
             //dd($table);

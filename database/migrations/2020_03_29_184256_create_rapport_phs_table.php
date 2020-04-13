@@ -17,7 +17,7 @@ class CreateRapportPhsTable extends Migration
             $table->bigIncrements('rapport_ph_id');
             $table->date('Date_de_visite');
             $table->string('pharmacie_zone');
-            $table->string('Potentiel');
+            $table->string('Potentiel')->nullable();
             //$table->string('Zone_Ville');
 
             $table->string('P1_présenté')->nullable();

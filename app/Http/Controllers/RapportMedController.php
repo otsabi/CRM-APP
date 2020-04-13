@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\RapportMed;
+use App\RapportPh;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
 
 class RapportMedController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:SUPADMIN');
+    }
+
+
     public function index(){
         return view('import.rapportMed.index');
     }
@@ -21,8 +29,8 @@ class RapportMedController extends Controller
                         if($request->hasFile('import_file'))
                         {
                             foreach ($files as $file) {
-                                //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
-                                //Excel::import(new FileImport, $file);
+                                // THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
+                                Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(3)->import($file, function ($line) {
                                     if (!empty($line["Nom Prenom"])) {
 
@@ -90,21 +98,79 @@ class RapportMedController extends Controller
 
                                     }
 
-                                    //var_dump($line["Montant Inv Précédents"]);
+                                //     //var_dump($line["Montant Inv Précédents"]);
+                                //     //dd($line);
+
+                                //     //  $date = DateTime::createFromFormat('j-M-Y', $line["Date de visite"]);
+                                //     //  echo $date->format('Y-m-d');
+                                //      //var_dump(Date::excelToDateTimeObject($line["Date de visite"])->format('Y-m-d'));
+
+                                //      //$date = $line["Date de visite"];
+
+                                //      //var_dump($date->date);
+                                //      //print_r($date);
+                                //         //echo $date["date"];
+                                // });
+                                (new FastExcel)->sheet(4)->import($file, function ($line) {
                                     //dd($line);
 
-                                    //  $date = DateTime::createFromFormat('j-M-Y', $line["Date de visite"]);
-                                    //  echo $date->format('Y-m-d');
-                                     //var_dump(Date::excelToDateTimeObject($line["Date de visite"])->format('Y-m-d'));
+                                    if (!empty($line["PHARMACIE-ZONE"])) {
 
-                                     //$date = $line["Date de visite"];
+                                    if (empty($line["P1 Nombre de boites"])) {
+                                        $line["P1 Nombre de boites"]=0;
+                                    }
+                                    if (empty($line["P2 Nombre de boites"])) {
+                                        $line["P2 Nombre de boites"]=0;
+                                    }
+                                    if (empty($line["P3 Nombre de boites"])) {
+                                        $line["P3 Nombre de boites"]=0;
+                                    }
+                                    if (empty($line["P4 Nombre de boites"])) {
+                                        $line["P4 Nombre de boites"]=0;
+                                    }
+                                    if (empty($line["P5 Nombre de boites"])) {
+                                        $line["P5 Nombre de boites"]=0;
+                                    }
 
-                                     //var_dump($date->date);
-                                     //print_r($date);
-                                        //echo $date["date"];
+
+
+                                     return RapportPh::create([
+
+                                    //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
+                                    'Date_de_visite' => Carbon::parse($line['Date de visite'])->toDateTimeString(),
+                                    'pharmacie_zone' => $line["PHARMACIE-ZONE"],
+                                    'Potentiel' => $line["Potentiel"],
+                                    //'Zone_Ville' => $line["Zone-Ville"],
+
+                                    'P1_présenté' => $line["P1 présenté"],
+                                    'P1_nombre_boites' => $line["P1 Nombre de boites"],
+
+                                    'P2_présenté' =>$line["P2 présenté"],
+                                    'P2_nombre_boites' => $line["P2 Nombre de boites"],
+
+                                    'P3_présenté' => $line["P3 présenté"],
+                                    'P3_nombre_boites' => $line["P3 Nombre de boites"],
+
+                                    'P4_présenté' => $line["P4 présenté"],
+                                    'P4_nombre_boites' => $line["P4 Nombre de boites"],
+
+                                    'P5_présenté' => $line["P5 présenté"],
+                                    'P5_nombre_boites' => $line["P5 Nombre de boites"],
+
+                                    'Plan/Réalisé' => $line["Plan/Réalisé"],
+                                    //'Visite_Individuelle/Double' => $line['Name'],
+                                    'DELEGUE' => "EL MEHDI AIT FAKIR",
+                                    'DELEGUE_id' => 1
+
+                                    ]);
+
+
+                                    }
+
                                 });
 
                             }
+                            return redirect()->action('RapportMedController@show')->with('status','ajouté avec succès.');
                         }
 
                     }
