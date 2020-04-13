@@ -29,8 +29,8 @@ class RapportMedController extends Controller
                         if($request->hasFile('import_file'))
                         {
                             foreach ($files as $file) {
-                                // THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
-                                Excel::import(new FileImport, $file);
+                                //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
+                                //Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(3)->import($file, function ($line) {
                                     if (!empty($line["Nom Prenom"])) {
 
@@ -98,19 +98,19 @@ class RapportMedController extends Controller
 
                                     }
 
-                                //     //var_dump($line["Montant Inv Précédents"]);
-                                //     //dd($line);
+                                    //var_dump($line["Montant Inv Précédents"]);
+                                    //dd($line);
 
-                                //     //  $date = DateTime::createFromFormat('j-M-Y', $line["Date de visite"]);
-                                //     //  echo $date->format('Y-m-d');
-                                //      //var_dump(Date::excelToDateTimeObject($line["Date de visite"])->format('Y-m-d'));
+                                    //  $date = DateTime::createFromFormat('j-M-Y', $line["Date de visite"]);
+                                    //  echo $date->format('Y-m-d');
+                                     //var_dump(Date::excelToDateTimeObject($line["Date de visite"])->format('Y-m-d'));
 
-                                //      //$date = $line["Date de visite"];
+                                     //$date = $line["Date de visite"];
 
-                                //      //var_dump($date->date);
-                                //      //print_r($date);
-                                //         //echo $date["date"];
-                                // });
+                                     //var_dump($date->date);
+                                     //print_r($date);
+                                        //echo $date["date"];
+                                });
                                 (new FastExcel)->sheet(4)->import($file, function ($line) {
                                     //dd($line);
 
@@ -163,7 +163,7 @@ class RapportMedController extends Controller
                                     'DELEGUE_id' => 1
 
                                     ]);
-
+                                     
 
                                     }
 
