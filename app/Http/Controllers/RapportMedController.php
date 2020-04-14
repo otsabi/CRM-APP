@@ -32,6 +32,11 @@ class RapportMedController extends Controller
                                 //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
                                 //Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(3)->import($file, function ($line) {
+                                    
+                                    if ($line["Délégué"] != ""){
+                                        $GLOBALS["Délégué"] = $line["Délégué"];
+                                    }
+                                    
                                     if (!empty($line["Nom Prenom"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
 
@@ -91,7 +96,7 @@ class RapportMedController extends Controller
                                     'Invitation_promise' => $line["Invitation promise"],
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
-                                    'DELEGUE' => "EL MEHDI AIT FAKIR",
+                                    'DELEGUE' => $GLOBALS["Délégué"],
                                     'DELEGUE_id' => 1
 
                                     ]);
@@ -112,7 +117,10 @@ class RapportMedController extends Controller
                                         //echo $date["date"];
                                 });
                                 (new FastExcel)->sheet(4)->import($file, function ($line) {
-                                    //dd($line);
+                                    
+                                    if ($line["Délégué"] != ""){
+                                        $GLOBALS["Délégué"] = $line["Délégué"];
+                                    }
 
                                     if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
@@ -159,7 +167,7 @@ class RapportMedController extends Controller
 
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
-                                    'DELEGUE' => "EL MEHDI AIT FAKIR",
+                                    'DELEGUE' => $GLOBALS["Délégué"],
                                     'DELEGUE_id' => 1
 
                                     ]);

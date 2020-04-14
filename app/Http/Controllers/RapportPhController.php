@@ -33,8 +33,11 @@ class RapportPhController extends Controller
                                 //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
                                 //Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(5)->import($file, function ($line) {
-                                    //dd($line);
-
+                                    
+                                    if ($line["Délégué"] != ""){
+                                        $GLOBALS["Délégué"] = $line["Délégué"];
+                                    }
+                                    
                                     if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
                                     if (empty($line["P1 Nombre de boites"])) {
@@ -80,7 +83,7 @@ class RapportPhController extends Controller
 
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
-                                    'DELEGUE' => "EL MEHDI AIT FAKIR",
+                                    'DELEGUE' => $GLOBALS["Délégué"],
                                     'DELEGUE_id' => 1
 
                                     ]);
