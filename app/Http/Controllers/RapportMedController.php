@@ -8,6 +8,7 @@ use App\RapportMed;
 use App\RapportPh;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class RapportMedController extends Controller
 {
@@ -22,8 +23,27 @@ class RapportMedController extends Controller
         return view('import.rapportMed.index');
     }
 
+    public function delegue_from_name_file($name_file, $DMs){
+        foreach($DMs as $DM){
+            $contains = Str::contains($name_file, [Str::lower($DM), Str::upper($DM)]);
+            if($contains == true){
+                return $DM;
+                break;
+            }
+        }
+        return $contains;
+         
+    }
+
     public function import(Request $request){
                 set_time_limit(500);
+
+                //intialise an array od DM with their ID
+                $DMs = array();
+                $DMs[1]= "ELOUADEH";
+                $DMs[2]= "IDDER";
+
+
                         $files = $request->file('import_file');
 
                         if($request->hasFile('import_file'))
@@ -31,11 +51,16 @@ class RapportMedController extends Controller
                             foreach ($files as $file) {
                                 //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
                                 //Excel::import(new FileImport, $file);
-                                (new FastExcel)->sheet(3)->import($file, function ($line) {
+
+                                //store original name of file.
+                                //$GLOBALS["original_name"] = $file->getClientOriginalName();
+
+                                $GLOBALS["Délégué"] = $this->delegue_from_name_file($file->getClientOriginalName(), $DMs);
+
+                            if ($GLOBALS["Délégué"]) {
                                     
-                                    if ($line["Délégué"] != ""){
-                                        $GLOBALS["Délégué"] = $line["Délégué"];
-                                    }
+                                (new FastExcel)->sheet(3)->import($file, function ($line) {
+                                
                                     
                                     if (!empty($line["Nom Prenom"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
@@ -61,7 +86,7 @@ class RapportMedController extends Controller
                                         $line["P5 Ech"]=0;
                                     }
 
-                                     return RapportMed::create([
+                                    return RapportMed::create([
 
                                     //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
                                     'Date_de_visite' => Carbon::parse($line['Date de visite'])->toDateTimeString(),
@@ -97,7 +122,7 @@ class RapportMedController extends Controller
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
                                     'DELEGUE' => $GLOBALS["Délégué"],
-                                    'DELEGUE_id' => 1
+                                    //'DELEGUE_id' => 1
 
                                     ]);
 
@@ -117,10 +142,6 @@ class RapportMedController extends Controller
                                         //echo $date["date"];
                                 });
                                 (new FastExcel)->sheet(4)->import($file, function ($line) {
-                                    
-                                    if ($line["Délégué"] != ""){
-                                        $GLOBALS["Délégué"] = $line["Délégué"];
-                                    }
 
                                     if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
@@ -142,7 +163,7 @@ class RapportMedController extends Controller
 
 
 
-                                     return RapportPh::create([
+                                    return RapportPh::create([
 
                                     //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
                                     'Date_de_visite' => Carbon::parse($line['Date de visite'])->toDateTimeString(),
@@ -168,7 +189,7 @@ class RapportMedController extends Controller
                                     'Plan/Réalisé' => $line["Plan/Réalisé"],
                                     //'Visite_Individuelle/Double' => $line['Name'],
                                     'DELEGUE' => $GLOBALS["Délégué"],
-                                    'DELEGUE_id' => 1
+                                    //'DELEGUE_id' => 1
 
                                     ]);
                                      
@@ -176,6 +197,10 @@ class RapportMedController extends Controller
                                     }
 
                                 });
+
+                            }else{
+                                dd("we can not find Delegue name !");
+                            }
 
                             }
                             return redirect()->action('RapportMedController@show')->with('status','ajouté avec succès.');
