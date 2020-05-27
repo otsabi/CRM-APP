@@ -119,8 +119,46 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.bc.index')}}">
+                                <i class="mdi mdi-newspaper-variant-outline menu-icon"></i>
+                                <span class="menu-title">PS Business case</span>
+                            </a>
+                        </li>
+
+                        <div class="dropdown-divider"></div>
+
 
                         <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#rapportmed" aria-expanded="false" aria-controls="rapportmed">
+                                <i class="mdi mdi-file-excel menu-icon"></i>
+                                <span class="menu-title">Rapport Med</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="rapportmed" style="">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportMed')}}"> Importer Rapport Med </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_med')}}">Liste Rapport Med</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#rapportph" aria-expanded="false" aria-controls="rapportph">
+                                <i class="mdi mdi-file-excel menu-icon"></i>
+                                <span class="menu-title">Rapport Ph</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="rapportph" style="">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportPh')}}"> Importer Rapport Ph </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_ph')}}">Liste Rapport Ph</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="{{route('admin.visitemed')}}">
                                 <i class="mdi mdi-stethoscope menu-icon"></i>
                                 <span class="menu-title">Visites médicales</span>
@@ -132,14 +170,9 @@
                                 <i class="mdi mdi-hospital-box menu-icon"></i>
                                 <span class="menu-title">Visites pharmacies</span>
                             </a>
-                        </li>
+                        </li> --}}
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.bc.index')}}">
-                                <i class="mdi mdi-newspaper-variant-outline menu-icon"></i>
-                                <span class="menu-title">PS Business case</span>
-                            </a>
-                        </li>
+
 
                         <div class="dropdown-divider"></div>
                         <li class="nav-item">
@@ -194,33 +227,6 @@
                         </li>
 
                         <div class="dropdown-divider"></div>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="#rapportmed" aria-expanded="false" aria-controls="rapportmed">
-                                <i class="mdi mdi-file-excel menu-icon"></i>
-                                <span class="menu-title">Rapport Med</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="collapse" id="rapportmed" style="">
-                                <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportMed')}}"> Importer Rapport Med </a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_med')}}">Liste Rapport Med</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="collapse" href="#rapportph" aria-expanded="false" aria-controls="rapportph">
-                                <i class="mdi mdi-file-excel menu-icon"></i>
-                                <span class="menu-title">Rapport Ph</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="collapse" id="rapportph" style="">
-                                <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item"><a class="nav-link" href="{{route('file_import_rapportPh')}}"> Importer Rapport Ph </a></li>
-                                    <li class="nav-item"><a class="nav-link" href="{{route('show_rapport_ph')}}">Liste Rapport Ph</a></li>
-                                </ul>
-                            </div>
-                        </li>
 
                       @endadmin
 

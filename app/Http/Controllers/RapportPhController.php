@@ -13,7 +13,7 @@ class RapportPhController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:SUPADMIN');
+        $this->middleware('role:SUPADMIN|ADMIN');
     }
 
 
@@ -33,11 +33,11 @@ class RapportPhController extends Controller
                                 //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
                                 //Excel::import(new FileImport, $file);
                                 (new FastExcel)->sheet(5)->import($file, function ($line) {
-                                    
+
                                     if ($line["Délégué"] != ""){
                                         $GLOBALS["Délégué"] = $line["Délégué"];
                                     }
-                                    
+
                                     if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
 
                                     if (empty($line["P1 Nombre de boites"])) {

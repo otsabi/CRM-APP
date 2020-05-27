@@ -221,7 +221,8 @@ class VisiteMedicalController extends Controller
 
             return redirect()->back()->with('status','Visite Supprimée');
         }
-        catch(\Exception $exception){
+
+       catch(\Exception $exception){
             return redirect()->back()->withErrors(['Error' => 'Une erreur s\'est produite lors du traitement de votre demande.']);
         }
 
