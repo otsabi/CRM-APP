@@ -7,6 +7,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\RapportPh;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class RapportPhController extends Controller
 {
@@ -16,89 +17,158 @@ class RapportPhController extends Controller
         $this->middleware('role:SUPADMIN|ADMIN');
     }
 
-
-
-
     public function index(){
         return view('import.rapportPh.index');
     }
 
-    public function import(Request $request){
-                set_time_limit(500);
-                        $files = $request->file('import_file');
+    public function delegue_from_name_file($name_file, $DMs){
 
-                        if($request->hasFile('import_file'))
-                        {
-                            foreach ($files as $file) {
-                                //THIS FIRST IS FOR LARAVEL-EXCEL PACKAGE
-                                //Excel::import(new FileImport, $file);
+        foreach($DMs as $DM){
+            $contains = Str::contains($name_file, [Str::lower($DM), Str::upper($DM)]);
+            if($contains == true){
+                return $DM;
+                break;
+            }
+
+        }
+
+        return $contains;
+
+    }
+
+    public function import(Request $request){
+        set_time_limit(500);
+        $GLOBALS["CNF"] = '';
+        $DMs = array(   'ELOUADEH',
+                        'IDDER',
+                        'NABIL BISTFALEN',
+                        'MOHAMED LAAMRAOUI',
+                        'BADRE BENJELLOUN',
+                        'AMINE EL MOUTAOUAKKIL ALAOUI',
+                        'GHIZLANE EL OUADEH',
+                        'MOHAMMED BOUHNINA MARNISSI',
+                        'TARIK FAHSI',
+                        'FIRDAOUSSE BELARABI',
+                        'NAOUFEL BOURHIME',
+                        'KARIMA BENHLIMA',
+                        'KARIM BERRADY',
+                        'HASSAN BELAHCEN',
+                        'HICHAM EL HANAFI',
+                        'MOSTAFA GHOUNDAL',
+                        'NADA CHAFAI',
+                        'MUSTAPHA HASNAOUI',
+                        'MHAMED BOUHMADI',
+                        'MOHAMED EL OUADEH',
+                        'RACHID CHAMI',
+                        'IDDER HAMDANI',
+                        'FOUAD BOUZIYANE',
+                        'ADIL SENHAJI',
+                        'NAJIB SKALLI',
+                        'RAJA KABBAJ',
+                        'MOHAMED BOURRAGAT',
+                        'TAREK BAJJOU',
+                        'SALIM BOUHLAL',
+                        'IMANE BOUJEDDAYINE',
+                        'MOUNA CHARRADI',
+                        'HASSAN IAJIB',
+                        'HANANE DLIMI',
+                        'ABDERRAHMANE EL BYARI',
+                        'ZAKARIA TEMSAMANI',
+                        'HICHAM EL MOUSTAKHIB',
+                        'HOUDA HMIDAY');
+
+                    $files = $request->file('import_file');
+
+                    if($request->hasFile('import_file')){
+                        foreach ($files as $file) {
+                     
+
+                            $GLOBALS["file_name"]= $file->getClientOriginalName();
+                            $GLOBALS["Délégué"] = $this->delegue_from_name_file($file->getClientOriginalName(), $DMs);
+
+                            if($GLOBALS["Délégué"] != FALSE){
                                 (new FastExcel)->sheet(5)->import($file, function ($line) {
 
-                                    if ($line["Délégué"] != ""){
-                                        $GLOBALS["Délégué"] = $line["Délégué"];
+                                    //dd($line);
+
+                                        if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
+
+                                            if (empty($line["P1 Nombre de boites"])) {
+                                                $line["P1 Nombre de boites"]=0;
+                                            }
+                                            if (empty($line["P2 Nombre de boites"])) {
+                                                $line["P2 Nombre de boites"]=0;
+                                            }
+                                            if (empty($line["P3 Nombre de boites"])) {
+                                                $line["P3 Nombre de boites"]=0;
+                                            }
+                                            if (empty($line["P4 Nombre de boites"])) {
+                                                $line["P4 Nombre de boites"]=0;
+                                            }
+                                            if (empty($line["P5 Nombre de boites"])) {
+                                                $line["P5 Nombre de boites"]=0;
+                                            }
+                                        try{
+                                            return RapportPh::create([
+
+                                            //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
+                                            'Date_de_visite' => Carbon::parse($line['Date de visite'])->toDateTimeString(),
+                                            'pharmacie_zone' => $line["PHARMACIE-ZONE"],
+                                            'Potentiel' => $line["Potentiel"],
+                                            //'Zone_Ville' => $line["Zone-Ville"],
+
+                                            'P1_présenté' => $line["P1 présenté"],
+                                            'P1_nombre_boites' => $line["P1 Nombre de boites"],
+
+                                            'P2_présenté' =>$line["P2 présenté"],
+                                            'P2_nombre_boites' => $line["P2 Nombre de boites"],
+
+                                            'P3_présenté' => $line["P3 présenté"],
+                                            'P3_nombre_boites' => $line["P3 Nombre de boites"],
+
+                                            'P4_présenté' => $line["P4 présenté"],
+                                            'P4_nombre_boites' => $line["P4 Nombre de boites"],
+
+                                            'P5_présenté' => $line["P5 présenté"],
+                                            'P5_nombre_boites' => $line["P5 Nombre de boites"],
+
+
+                                            'Plan/Réalisé' => $line["Plan/Réalisé"],
+                                            //'Visite_Individuelle/Double' => $line['Name'],
+                                            'DELEGUE' => $GLOBALS["Délégué"],
+                                            //'DELEGUE_id' => 1
+
+                                        ]);//end return create
+                                    }
+                                    catch(\Exception  $e){
+
+                                        $GLOBALS["CNF"] = 1;
+                                        //echo $e->getMessage();
                                     }
 
-                                    if (!empty($line["PHARMACIE-ZONE"]) && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")) {
+                                }//end if test Plan/Réalisé
+                            
+                    
+                        });//end FastExcel)->sheet(5)
 
-                                    if (empty($line["P1 Nombre de boites"])) {
-                                        $line["P1 Nombre de boites"]=0;
-                                    }
-                                    if (empty($line["P2 Nombre de boites"])) {
-                                        $line["P2 Nombre de boites"]=0;
-                                    }
-                                    if (empty($line["P3 Nombre de boites"])) {
-                                        $line["P3 Nombre de boites"]=0;
-                                    }
-                                    if (empty($line["P4 Nombre de boites"])) {
-                                        $line["P4 Nombre de boites"]=0;
-                                    }
-                                    if (empty($line["P5 Nombre de boites"])) {
-                                        $line["P5 Nombre de boites"]=0;
-                                    }
-                                    if ($line["Plan/Réalisé"] === 'Réalisé' or 'Réalisé hors Plan' ){
+         }else{
+            return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Corrigez le nom  du fichier : '.$GLOBALS["file_name"]]);
 
-                                     return RapportPh::create([
+        }//$GLOBALS["Délégué"] != FALSE
 
-                                    //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
-                                    'Date_de_visite' => Carbon::parse($line['Date de visite'])->toDateTimeString(),
-                                    'pharmacie_zone' => $line["PHARMACIE-ZONE"],
-                                    'Potentiel' => $line["Potentiel"],
-                                    //'Zone_Ville' => $line["Zone-Ville"],
-
-                                    'P1_présenté' => $line["P1 présenté"],
-                                    'P1_nombre_boites' => $line["P1 Nombre de boites"],
-
-                                    'P2_présenté' =>$line["P2 présenté"],
-                                    'P2_nombre_boites' => $line["P2 Nombre de boites"],
-
-                                    'P3_présenté' => $line["P3 présenté"],
-                                    'P3_nombre_boites' => $line["P3 Nombre de boites"],
-
-                                    'P4_présenté' => $line["P4 présenté"],
-                                    'P4_nombre_boites' => $line["P4 Nombre de boites"],
-
-                                    'P5_présenté' => $line["P5 présenté"],
-                                    'P5_nombre_boites' => $line["P5 Nombre de boites"],
-
-
-                                    'Plan/Réalisé' => $line["Plan/Réalisé"],
-                                    //'Visite_Individuelle/Double' => $line['Name'],
-                                    'DELEGUE' => $GLOBALS["Délégué"],
-                                    'DELEGUE_id' => 1
-
-                                    ]);
-
-                                    }
-                                }
-
-                                });
-
-                            }
-                            return redirect()->action('RapportPhController@show')->with('status','ajouté avec succès.');
-
-                        }
-
+                    }//end foreach
+                    //dd($GLOBALS["CNF"]);
+                    if ($GLOBALS["CNF"] == 1){
+                        //echo 'result : '.$GLOBALS["CNF"];
+                        return redirect()->route('file_import_rapportPh')->withErrors(['Error' => 'Vérifier les Colonnes rapport Ph du Ficher  : '.$GLOBALS["file_name"]]);
                     }
+                    else{
+                        return redirect()->route('show_rapport_ph')->with('status','  File(s) uploaded successfully.');
+                    }
+
+                }//end $request->hasFile
+
+}//end function
 
     public function show(){
         return view('import.rapportPh.show');
