@@ -48,8 +48,8 @@ class CreateRapportMedsTable extends Migration
             $table->string('Plan/Réalisé');
             //$table->string('Visite_Individuelle/Double')->nullable();;
 
-            $table->string('DELEGUE');
-            $table->integer('DELEGUE_id');
+            $table->string('DELEGUE')->nullable();
+            $table->integer('DELEGUE_id')->nullable();
 
             $table->timestamps();
         });
