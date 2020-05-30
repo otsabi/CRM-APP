@@ -49,10 +49,11 @@
             <div class="card">
                 <div class="card-header">
                     <i class="mdi mdi-account-group"></i>&nbsp; Rapport Med
+                    <a href="export_rapport_med" class="btn btn-primary mr-2 float-right" style="color: white">Export</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-
+                        
                         <table id="example" class="display" style="width:100%">
                             <thead>
                             <tr>

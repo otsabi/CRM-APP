@@ -173,8 +173,79 @@ class RapportPhController extends Controller
     public function show(){
         return view('import.rapportPh.show');
     }
+
     public function getRapportPh(){
         $rapportPh = RapportPh::all();
         return response()->json($rapportPh);
+    }
+
+    public function export(){
+
+        $datas = RapportPh::where('rapport_ph_id','<=',2)->get();
+        
+        if (!empty($datas->toArray())) {
+            //Data exists
+            foreach ($datas as $data) {
+            
+                $list[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P1_présenté'],
+                    'P Nombre de boites' => $data['P1_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P2_présenté'],
+                    'P Nombre de boites' => $data['P2_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P3_présenté'],
+                    'P Nombre de boites' => $data['P3_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P4_présenté'],
+                    'P Nombre de boites' => $data['P4_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P5_présenté'],
+                    'P Nombre de boites' => $data['P5_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+                
+            }
+
+            return (new FastExcel($list))->download('file.xlsx');
+
+        }else{
+            //No Data Exists
+            //dd('no data exist');
+            return redirect()->route('show_rapport_ph')->withErrors(['Error' => 'Il n\'existe aucune ligne à exporté !']);
+        }
+
     }
 }

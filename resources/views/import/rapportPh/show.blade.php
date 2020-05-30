@@ -49,6 +49,7 @@
             <div class="card">
                 <div class="card-header">
                     <i class="mdi mdi-account-group"></i>&nbsp; Rapport Ph
+                    <a href="export_rapport_ph" class="btn btn-primary mr-2 float-right" style="color: white">Export</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

@@ -42,7 +42,7 @@ class RapportMedController extends Controller
     public function import(Request $request){
                 set_time_limit(500);
 
-                //intialise an array od DM with their ID
+                //intialise an array of DM with their ID
 
                 $DMs = array(   'ELOUADEH',
                                 'IDDER',
@@ -268,8 +268,24 @@ class RapportMedController extends Controller
     public function show(){
         return view('import.rapportMed.show');
     }
+
     public function getRapportMed(){
         $rapportMed = RapportMed::all();
         return response()->json($rapportMed);
+    }
+
+    public function export(){
+        //return view('import.rapportMed.show');
+        //dd("works !");
+        
+        /*$list = collect([
+            [ 'id' => 1, 'name' => 'Jane' ],
+            [ 'id' => 2, 'name' => 'John' ],
+        ]);*/
+        
+        //dd($list);
+        //return (new FastExcel($list))->export('file.xlsx');
+        
+        //return (new FastExcel($list))->download('file.xlsx');
     }
 }
