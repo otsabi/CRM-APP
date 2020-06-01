@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
 use App\RapportPh;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
@@ -181,11 +182,11 @@ class RapportPhController extends Controller
 
     public function export(){
 
-        $datas = RapportPh::where('rapport_ph_id','<=',2)->get();
+        $data_ph = RapportPh::where('rapport_ph_id','<=',2)->get();
         
-        if (!empty($datas->toArray())) {
+        if (!empty($data_ph->toArray())) {
             //Data exists
-            foreach ($datas as $data) {
+            foreach ($data_ph as $data) {
             
                 $list[] =
                 [   'Date de visite' => $data['Date_de_visite'], 
@@ -239,7 +240,13 @@ class RapportPhController extends Controller
                 
             }
 
-            return (new FastExcel($list))->download('file.xlsx');
+            //return (new FastExcel($list))->download('file.xlsx');
+
+            $sheets = new SheetCollection([
+                'Synt Hebdo DATA PH' => $list
+            ]);
+            
+            return (new FastExcel($sheets))->download('Synt_hebdo.xlsx');
 
         }else{
             //No Data Exists

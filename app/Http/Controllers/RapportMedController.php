@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
 use App\RapportMed;
 use App\RapportPh;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -274,18 +275,179 @@ class RapportMedController extends Controller
         return response()->json($rapportMed);
     }
 
+  
     public function export(){
-        //return view('import.rapportMed.show');
-        //dd("works !");
-        
-        /*$list = collect([
-            [ 'id' => 1, 'name' => 'Jane' ],
-            [ 'id' => 2, 'name' => 'John' ],
-        ]);*/
-        
-        //dd($list);
-        //return (new FastExcel($list))->export('file.xlsx');
-        
-        //return (new FastExcel($list))->download('file.xlsx');
+
+        //TODO : change request later
+        $data_ph = RapportPh::where('rapport_ph_id','<=',2)->get();
+        $data_med = RapportMed::where('rapport_med_id','<=',2)->get();
+        //dd($data_med);
+
+        if (!empty($data_ph->toArray()) && !empty($data_med->toArray())) {
+            //Data exists
+
+            //partie rapport ph
+            foreach ($data_ph as $data) {
+            
+                $list_ph[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P1_présenté'],
+                    'P Nombre de boites' => $data['P1_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_ph[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P2_présenté'],
+                    'P Nombre de boites' => $data['P2_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_ph[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P3_présenté'],
+                    'P Nombre de boites' => $data['P3_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_ph[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P4_présenté'],
+                    'P Nombre de boites' => $data['P4_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_ph[] =
+                [   'Date de visite' => $data['Date_de_visite'], 
+                    'PHARMACIE-ZONE' => $data['pharmacie_zone'],
+                    'Potentiel' => $data['Potentiel'],
+                    'P présenté' => $data['P5_présenté'],
+                    'P Nombre de boites' => $data['P5_nombre_boites'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+                
+            }
+            //partie rapport med
+            foreach ($data_med as $data) {
+            
+                $list_med[] =
+                [
+                    'Date de visite' => $data['Date_de_visite'], 
+                    'Nom Prenom' => $data['Nom_Prenom'],
+                    'Specialité' => $data['Specialité'],
+                    'Etablissement' => $data['Etablissement'],
+                    'Potentiel' => $data['Potentiel'],
+                    'Montant Inv Précédents' => $data['Montant_Inv_Précédents'],
+                    'Zone' => $data['Zone_Ville'],
+                    'P présenté' => $data['P1_présenté'],
+                    'P Feedback' => $data['P1_Feedback'],
+                    'P Ech' => $data['P1_Ech'],
+                    'Materiel Promotion' => $data['Materiel_Promotion'],
+                    'Invitation promise' => $data['Invitation_promise'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_med[] =
+                [
+                    'Date de visite' => $data['Date_de_visite'], 
+                    'Nom Prenom' => $data['Nom_Prenom'],
+                    'Specialité' => $data['Specialité'],
+                    'Etablissement' => $data['Etablissement'],
+                    'Potentiel' => $data['Potentiel'],
+                    'Montant Inv Précédents' => $data['Montant_Inv_Précédents'],
+                    'Zone' => $data['Zone_Ville'],
+                    'P présenté' => $data['P2_présenté'],
+                    'P Feedback' => $data['P2_Feedback'],
+                    'P Ech' => $data['P2_Ech'],
+                    'Materiel Promotion' => $data['Materiel_Promotion'],
+                    'Invitation promise' => $data['Invitation_promise'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_med[] =
+                [  
+                    'Date de visite' => $data['Date_de_visite'], 
+                    'Nom Prenom' => $data['Nom_Prenom'],
+                    'Specialité' => $data['Specialité'],
+                    'Etablissement' => $data['Etablissement'],
+                    'Potentiel' => $data['Potentiel'],
+                    'Montant Inv Précédents' => $data['Montant_Inv_Précédents'],
+                    'Zone' => $data['Zone_Ville'],
+                    'P présenté' => $data['P3_présenté'],
+                    'P Feedback' => $data['P3_Feedback'],
+                    'P Ech' => $data['P3_Ech'],
+                    'Materiel Promotion' => $data['Materiel_Promotion'],
+                    'Invitation promise' => $data['Invitation_promise'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'], 
+                ];
+    
+                $list_med[] =
+                [
+                    'Date de visite' => $data['Date_de_visite'], 
+                    'Nom Prenom' => $data['Nom_Prenom'],
+                    'Specialité' => $data['Specialité'],
+                    'Etablissement' => $data['Etablissement'],
+                    'Potentiel' => $data['Potentiel'],
+                    'Montant Inv Précédents' => $data['Montant_Inv_Précédents'],
+                    'Zone' => $data['Zone_Ville'],
+                    'P présenté' => $data['P4_présenté'],
+                    'P Feedback' => $data['P4_Feedback'],
+                    'P Ech' => $data['P4_Ech'],
+                    'Materiel Promotion' => $data['Materiel_Promotion'],
+                    'Invitation promise' => $data['Invitation_promise'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'],
+                ];
+    
+                $list_med[] =
+                [  
+                    'Date de visite' => $data['Date_de_visite'], 
+                    'Nom Prenom' => $data['Nom_Prenom'],
+                    'Specialité' => $data['Specialité'],
+                    'Etablissement' => $data['Etablissement'],
+                    'Potentiel' => $data['Potentiel'],
+                    'Montant Inv Précédents' => $data['Montant_Inv_Précédents'],
+                    'Zone' => $data['Zone_Ville'],
+                    'P présenté' => $data['P5_présenté'],
+                    'P Feedback' => $data['P5_Feedback'],
+                    'P Ech' => $data['P5_Ech'],
+                    'Materiel Promotion' => $data['Materiel_Promotion'],
+                    'Invitation promise' => $data['Invitation_promise'],
+                    'Plan/Réalisé' => $data['Plan/Réalisé'],
+                    'DELEGUE' => $data['DELEGUE'], 
+                ];
+                
+            }
+
+            $sheets = new SheetCollection([
+                'Synt Hebdo DATA PH' => $list_ph,
+                'Synt Hebdo DATA MED' => $list_med
+            ]);
+            
+            return (new FastExcel($sheets))->download('Synt_hebdo.xlsx');
+
+        }else{
+            //No Data Exists
+            //dd('no data exist');
+            return redirect()->route('show_rapport_ph')->withErrors(['Error' => 'Il n\'existe aucune ligne à exporté !']);
+        }
+
     }
+    
 }
