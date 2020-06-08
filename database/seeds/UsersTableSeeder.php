@@ -24,12 +24,21 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'ville_id' => 1,
+            'nom' => 'ADMIN',
+            'prenom' => 'CRM',
+            'title' => 'Mr',
+            'email' => 'admin@crm.ma',
+            'password' => Hash::make('HI1A@'),
+            'role_id' => 2,
+        ]);
+        DB::table('users')->insert([
+            'ville_id' => 1,
             'nom' => 'SUPER',
             'prenom' => 'ADMIN',
             'title' => 'Mr',
-            'email' => 'admin@crm.ma',
-            'password' => Hash::make('admin123456'),
-            'role_id' => 1,
+            'email' => 'superadmin@crm.ma',
+            'password' => Hash::make('HI1A@'),
+            'role_id' => 2,
         ]);
 
     }

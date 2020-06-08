@@ -3,6 +3,25 @@
 @section('content')
 
     <div class="row">
+        
+        <div class="col-sm-12">
+            @if(session('status'))
+                <div class="alert alert-success" role="alert">
+                    File(s) uploaded successfully -  {{session('status')}}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <h6>Oops ! </h6>
+                    <ul class="list-unstyled mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>- {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
 
         <div class="col-sm-12 grid-margin stretch-card">
             <div class="card">
