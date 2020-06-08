@@ -288,9 +288,9 @@ class RapportMedController extends Controller
 
             //partie rapport ph
             foreach ($data_ph as $data) {
-            
+                
                 $list_ph[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P1_présenté'],
@@ -300,7 +300,7 @@ class RapportMedController extends Controller
                 ];
     
                 $list_ph[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P2_présenté'],
@@ -310,7 +310,7 @@ class RapportMedController extends Controller
                 ];
     
                 $list_ph[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P3_présenté'],
@@ -320,7 +320,7 @@ class RapportMedController extends Controller
                 ];
     
                 $list_ph[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P4_présenté'],
@@ -330,7 +330,7 @@ class RapportMedController extends Controller
                 ];
     
                 $list_ph[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P5_présenté'],
@@ -345,7 +345,7 @@ class RapportMedController extends Controller
             
                 $list_med[] =
                 [
-                    'Date de visite' => $data['Date_de_visite'], 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -363,7 +363,7 @@ class RapportMedController extends Controller
     
                 $list_med[] =
                 [
-                    'Date de visite' => $data['Date_de_visite'], 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -381,7 +381,7 @@ class RapportMedController extends Controller
     
                 $list_med[] =
                 [  
-                    'Date de visite' => $data['Date_de_visite'], 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -399,7 +399,7 @@ class RapportMedController extends Controller
     
                 $list_med[] =
                 [
-                    'Date de visite' => $data['Date_de_visite'], 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -417,7 +417,7 @@ class RapportMedController extends Controller
     
                 $list_med[] =
                 [  
-                    'Date de visite' => $data['Date_de_visite'], 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],

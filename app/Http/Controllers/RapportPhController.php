@@ -187,9 +187,9 @@ class RapportPhController extends Controller
         if (!empty($data_ph->toArray())) {
             //Data exists
             foreach ($data_ph as $data) {
-            
+                
                 $list[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P1_présenté'],
@@ -199,7 +199,7 @@ class RapportPhController extends Controller
                 ];
     
                 $list[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P2_présenté'],
@@ -209,7 +209,7 @@ class RapportPhController extends Controller
                 ];
     
                 $list[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P3_présenté'],
@@ -219,7 +219,7 @@ class RapportPhController extends Controller
                 ];
     
                 $list[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P4_présenté'],
@@ -229,7 +229,7 @@ class RapportPhController extends Controller
                 ];
     
                 $list[] =
-                [   'Date de visite' => $data['Date_de_visite'], 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P5_présenté'],
