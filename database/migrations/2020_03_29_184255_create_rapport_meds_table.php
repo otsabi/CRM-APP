@@ -17,11 +17,11 @@ class CreateRapportMedsTable extends Migration
             $table->bigIncrements('rapport_med_id');
             $table->date('Date_de_visite');
             $table->string('Nom_Prenom');
-            $table->string('Specialité');
-            $table->string('Etablissement');
+            $table->string('Specialité')->nullable();
+            $table->string('Etablissement')->nullable();
             $table->string('Potentiel')->nullable();
             $table->unsignedBigInteger('Montant_Inv_Précédents')->nullable();
-            $table->string('Zone_Ville');
+            $table->string('Zone_Ville')->nullable();
 
             $table->string('P1_présenté')->nullable();
             $table->string('P1_Feedback')->nullable();

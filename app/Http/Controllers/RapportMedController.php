@@ -42,7 +42,8 @@ class RapportMedController extends Controller
 
     public function import(Request $request){
                 set_time_limit(500);
-
+                $GLOBALS["CNF"] = '';
+                //$GLOBALS["msg_error"] = '';
                 //intialise an array of DM with their ID
 
                 $DMs = array(   'ELOUADEH',
@@ -52,35 +53,36 @@ class RapportMedController extends Controller
                                 'BADRE BENJELLOUN',
                                 'AMINE EL MOUTAOUAKKIL ALAOUI',
                                 'GHIZLANE EL OUADEH',
-                                'MOHAMMED BOUHNINA MARNISSI',
-                                'TARIK FAHSI',
-                                'FIRDAOUSSE BELARABI',
+                                'MARNISSI',
+                                'TARIK',
+                                'FIRDAOUSSE',
                                 'NAOUFEL BOURHIME',
                                 'KARIMA BENHLIMA',
                                 'KARIM BERRADY',
                                 'HASSAN BELAHCEN',
                                 'HICHAM EL HANAFI',
-                                'MOSTAFA GHOUNDAL',
+                                'MOSTAFA',
                                 'NADA CHAFAI',
-                                'MUSTAPHA HASNAOUI',
+                                'HASNAOUI',
                                 'MHAMED BOUHMADI',
                                 'MOHAMED EL OUADEH',
                                 'RACHID CHAMI',
                                 'IDDER HAMDANI',
                                 'FOUAD BOUZIYANE',
                                 'ADIL SENHAJI',
-                                'NAJIB SKALLI',
+                                'NAJIB',
                                 'RAJA KABBAJ',
                                 'MOHAMED BOURRAGAT',
                                 'TAREK BAJJOU',
                                 'SALIM BOUHLAL',
-                                'IMANE BOUJEDDAYINE',
-                                'MOUNA CHARRADI',
+                                'IMANE',
+                                'MOUNA',
                                 'HASSAN IAJIB',
                                 'HANANE DLIMI',
-                                'ABDERRAHMANE EL BYARI',
+                                'ABDERRAHMANE',
                                 'ZAKARIA TEMSAMANI',
-                                'HICHAM EL MOUSTAKHIB');
+                                'HICHAM EL MOUSTAKHIB',
+                                'FARES');
 
 
 
@@ -97,6 +99,16 @@ class RapportMedController extends Controller
                                 //store original name of file.
                                 //$GLOBALS["original_name"] = $file->getClientOriginalName();
 
+
+
+
+                                // Test if string contains the word
+                                // if(strpos($mystring, $word) !== false){
+                                //     echo "Word Found!";
+                                // } else{
+                                //     echo "Word Not Found!";
+                                // }
+
                                 $GLOBALS["file_name"]= $file->getClientOriginalName();
 
 
@@ -106,7 +118,6 @@ class RapportMedController extends Controller
 
                                         (new FastExcel)->sheet(3)->import($file, function ($line)
                                         {
-
                                             if ( !empty($line["Nom Prenom"]) && $line["Nom Prenom"] != 'Nom Prenom' && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan")  ) {
 
                                                     if(gettype($line["Montant Inv Précédents"]) == 'integer' && $line["Montant Inv Précédents"] == 0 ){
@@ -130,7 +141,7 @@ class RapportMedController extends Controller
                                                         $line["P5 Ech"]=0;
                                                     }
                                                     try{
-
+                                                        //dd($line);
                                                         return RapportMed::create([
 
                                                             //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
@@ -166,20 +177,22 @@ class RapportMedController extends Controller
                                                             'Invitation_promise' => $line["Invitation promise"],
                                                             'Plan/Réalisé' => $line["Plan/Réalisé"],
                                                             //'Visite_Individuelle/Double' => $line['Name'],
-                                                            'DELEGUE' => $GLOBALS["Délégué"],
-                                                            'DELEGUE_id' => 1
+                                                            'DELEGUE' => $GLOBALS["Délégué"]
+                                                            //'DELEGUE_id' => 1
 
                                                             ]);
 
                                                             }
-                                                        catch(\Exception  $e){
+                                                        catch(\Exception $e){
 
-                                                            $CNF = 0;
+                                                            //$CNF = 0;
+                                                            //$GLOBALS["msg_error"] = $e->getMessage();
+                                                            $GLOBALS["CNF"] = 0;
                                                         }
                                             }
                                         });
 
-                                        (new FastExcel)->sheet(4 )->import($file, function ($line)
+                                        (new FastExcel)->sheet(4)->import($file, function ($line)
                                         {
 
                                             if (!empty($line["PHARMACIE-ZONE"]) && $line["PHARMACIE-ZONE"] != 'PHARMACIE-ZONE' && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan"))
@@ -200,9 +213,9 @@ class RapportMedController extends Controller
                                                 if (empty($line["P5 Nombre de boites"])) {
                                                     $line["P5 Nombre de boites"]=0;
                                                 }
+
                                                 try{
-
-
+                                                //var_dump($line);
                                                 return RapportPh::create([
 
                                                 //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
@@ -230,30 +243,35 @@ class RapportMedController extends Controller
                                                 'Plan/Réalisé' => $line["Plan/Réalisé"],
                                                 //'Visite_Individuelle/Double' => $line['Name'],
                                                 'DELEGUE' => $GLOBALS["Délégué"],
-                                                'DELEGUE_id' => 1
+                                                //'DELEGUE_id' => 1
 
                                                 ]);
 
                                                 }
-                                                catch(\Exception  $e){
+                                                catch(\Exception $e){
 
-                                                    $CNF = 1;
+                                                    //$CNF = 1;
+
+                                                    $GLOBALS["CNF"] = 1;
 
                                                 }
                                             }
 
                                         });
+
+
                                     }
                                     else{
                                         return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Corrigez le nom  du fichier : '.$GLOBALS["file_name"]]);
 
                                     }
                             }
-                            if ($CNF = 0){
+                            //dd($GLOBALS["CNF"]);
+                            if ($GLOBALS["CNF"] === 0){
                                 return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Vérifier les Colonnes rapport Med du Ficher  : '.$GLOBALS["file_name"]]);
 
                             }
-                            elseif($CNF = 1){
+                            elseif($GLOBALS["CNF"] === 1){
                                 return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Vérifier les Colonnes rapport Ph du Ficher  : '.$GLOBALS["file_name"]]);
 
                             }
@@ -275,7 +293,7 @@ class RapportMedController extends Controller
         return response()->json($rapportMed);
     }
 
-  
+
     public function export(){
 
         //TODO : change request later
@@ -288,9 +306,9 @@ class RapportMedController extends Controller
 
             //partie rapport ph
             foreach ($data_ph as $data) {
-                
+
                 $list_ph[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P1_présenté'],
@@ -298,9 +316,9 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_ph[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P2_présenté'],
@@ -308,9 +326,9 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_ph[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P3_présenté'],
@@ -318,9 +336,9 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_ph[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P4_présenté'],
@@ -328,9 +346,9 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_ph[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P5_présenté'],
@@ -338,14 +356,14 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-                
+
             }
             //partie rapport med
             foreach ($data_med as $data) {
-            
+
                 $list_med[] =
                 [
-                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -360,10 +378,10 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_med[] =
                 [
-                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -378,10 +396,10 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_med[] =
-                [  
-                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -394,12 +412,12 @@ class RapportMedController extends Controller
                     'Materiel Promotion' => $data['Materiel_Promotion'],
                     'Invitation promise' => $data['Invitation_promise'],
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
-                    'DELEGUE' => $data['DELEGUE'], 
+                    'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_med[] =
                 [
-                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -414,10 +432,10 @@ class RapportMedController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list_med[] =
-                [  
-                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [
+                    'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'Nom Prenom' => $data['Nom_Prenom'],
                     'Specialité' => $data['Specialité'],
                     'Etablissement' => $data['Etablissement'],
@@ -430,16 +448,16 @@ class RapportMedController extends Controller
                     'Materiel Promotion' => $data['Materiel_Promotion'],
                     'Invitation promise' => $data['Invitation_promise'],
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
-                    'DELEGUE' => $data['DELEGUE'], 
+                    'DELEGUE' => $data['DELEGUE'],
                 ];
-                
+
             }
 
             $sheets = new SheetCollection([
                 'Synt Hebdo DATA PH' => $list_ph,
                 'Synt Hebdo DATA MED' => $list_med
             ]);
-            
+
             return (new FastExcel($sheets))->download('Synt_hebdo.xlsx');
 
         }else{
@@ -449,5 +467,5 @@ class RapportMedController extends Controller
         }
 
     }
-    
+
 }
