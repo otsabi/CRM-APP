@@ -42,7 +42,8 @@ class RapportMedController extends Controller
 
     public function import(Request $request){
                 set_time_limit(500);
-
+                $GLOBALS["CNF"] = '';
+                //$GLOBALS["msg_error"] = '';
                 //intialise an array of DM with their ID
 
                 $DMs = array(   'ELOUADEH',
@@ -130,7 +131,7 @@ class RapportMedController extends Controller
                                                         $line["P5 Ech"]=0;
                                                     }
                                                     try{
-
+                                                        //dd($line);
                                                         return RapportMed::create([
 
                                                             //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
@@ -166,20 +167,22 @@ class RapportMedController extends Controller
                                                             'Invitation_promise' => $line["Invitation promise"],
                                                             'Plan/Réalisé' => $line["Plan/Réalisé"],
                                                             //'Visite_Individuelle/Double' => $line['Name'],
-                                                            'DELEGUE' => $GLOBALS["Délégué"],
-                                                            'DELEGUE_id' => 1
+                                                            'DELEGUE' => $GLOBALS["Délégué"]
+                                                            //'DELEGUE_id' => 1
 
                                                             ]);
 
                                                             }
-                                                        catch(\Exception  $e){
+                                                        catch(\Exception $e){
 
-                                                            $CNF = 0;
+                                                            //$CNF = 0;
+                                                            //$GLOBALS["msg_error"] = $e->getMessage();
+                                                            $GLOBALS["CNF"] = 0;
                                                         }
                                             }
                                         });
 
-                                        (new FastExcel)->sheet(4 )->import($file, function ($line)
+                                        (new FastExcel)->sheet(4)->import($file, function ($line)
                                         {
 
                                             if (!empty($line["PHARMACIE-ZONE"]) && $line["PHARMACIE-ZONE"] != 'PHARMACIE-ZONE' && ($line["Plan/Réalisé"] == "Réalisé" || $line["Plan/Réalisé"] == "Réalisé hors Plan"))
@@ -200,9 +203,9 @@ class RapportMedController extends Controller
                                                 if (empty($line["P5 Nombre de boites"])) {
                                                     $line["P5 Nombre de boites"]=0;
                                                 }
+
                                                 try{
-
-
+                                                //var_dump($line);
                                                 return RapportPh::create([
 
                                                 //'Date_de_visite' => $line["Date de visite"]->format('Y-m-d H:i:s'),
@@ -230,30 +233,35 @@ class RapportMedController extends Controller
                                                 'Plan/Réalisé' => $line["Plan/Réalisé"],
                                                 //'Visite_Individuelle/Double' => $line['Name'],
                                                 'DELEGUE' => $GLOBALS["Délégué"],
-                                                'DELEGUE_id' => 1
+                                                //'DELEGUE_id' => 1
 
                                                 ]);
 
                                                 }
-                                                catch(\Exception  $e){
+                                                catch(\Exception $e){
 
-                                                    $CNF = 1;
+                                                    //$CNF = 1;
+                                                    
+                                                    $GLOBALS["CNF"] = 1;
 
                                                 }
                                             }
 
                                         });
+
+
                                     }
                                     else{
                                         return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Corrigez le nom  du fichier : '.$GLOBALS["file_name"]]);
 
                                     }
                             }
-                            if ($CNF = 0){
+                            //dd($GLOBALS["CNF"]);
+                            if ($GLOBALS["CNF"] === 0){
                                 return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Vérifier les Colonnes rapport Med du Ficher  : '.$GLOBALS["file_name"]]);
-
+                                
                             }
-                            elseif($CNF = 1){
+                            elseif($GLOBALS["CNF"] === 1){
                                 return redirect()->route('file_import_rapportMed')->withErrors(['Error' => 'Vérifier les Colonnes rapport Ph du Ficher  : '.$GLOBALS["file_name"]]);
 
                             }

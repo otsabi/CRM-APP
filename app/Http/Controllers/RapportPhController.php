@@ -159,7 +159,7 @@ class RapportPhController extends Controller
 
                     }//end foreach
                     //dd($GLOBALS["CNF"]);
-                    if ($GLOBALS["CNF"] == 1){
+                    if ($GLOBALS["CNF"] === 1){
                         //echo 'result : '.$GLOBALS["CNF"];
                         return redirect()->route('file_import_rapportPh')->withErrors(['Error' => 'Vérifier les Colonnes rapport Ph du Ficher  : '.$GLOBALS["file_name"]]);
                     }
