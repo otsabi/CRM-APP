@@ -73,7 +73,7 @@ class RapportPhController extends Controller
                         'MOUNA CHARRADI',
                         'HASSAN IAJIB',
                         'HANANE DLIMI',
-                        'ABDERRAHMANE EL BYARI',
+                        'ABDERRAHMANE',
                         'ZAKARIA TEMSAMANI',
                         'HICHAM EL MOUSTAKHIB',
                         'HOUDA HMIDAY');
@@ -82,7 +82,7 @@ class RapportPhController extends Controller
 
                     if($request->hasFile('import_file')){
                         foreach ($files as $file) {
-                     
+
 
                             $GLOBALS["file_name"]= $file->getClientOriginalName();
                             $GLOBALS["Délégué"] = $this->delegue_from_name_file($file->getClientOriginalName(), $DMs);
@@ -148,8 +148,8 @@ class RapportPhController extends Controller
                                     }
 
                                 }//end if test Plan/Réalisé
-                            
-                    
+
+
                         });//end FastExcel)->sheet(5)
 
          }else{
@@ -183,13 +183,13 @@ class RapportPhController extends Controller
     public function export(){
 
         $data_ph = RapportPh::where('rapport_ph_id','<=',2)->get();
-        
+
         if (!empty($data_ph->toArray())) {
             //Data exists
             foreach ($data_ph as $data) {
-                
+
                 $list[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P1_présenté'],
@@ -197,9 +197,9 @@ class RapportPhController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P2_présenté'],
@@ -207,9 +207,9 @@ class RapportPhController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P3_présenté'],
@@ -217,9 +217,9 @@ class RapportPhController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P4_présenté'],
@@ -227,9 +227,9 @@ class RapportPhController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-    
+
                 $list[] =
-                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'), 
+                [   'Date de visite' => Carbon::parse($data['Date_de_visite'])->format('d/m/Y'),
                     'PHARMACIE-ZONE' => $data['pharmacie_zone'],
                     'Potentiel' => $data['Potentiel'],
                     'P présenté' => $data['P5_présenté'],
@@ -237,7 +237,7 @@ class RapportPhController extends Controller
                     'Plan/Réalisé' => $data['Plan/Réalisé'],
                     'DELEGUE' => $data['DELEGUE'],
                 ];
-                
+
             }
 
             //return (new FastExcel($list))->download('file.xlsx');
@@ -245,7 +245,7 @@ class RapportPhController extends Controller
             $sheets = new SheetCollection([
                 'Synt Hebdo DATA PH' => $list
             ]);
-            
+
             return (new FastExcel($sheets))->download('Synt_hebdo.xlsx');
 
         }else{
